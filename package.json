@@ -16,7 +16,8 @@
     "typecheck": "tsc",
     "test": "yarn test:unit",
     "test:unit": "NODE_ENV=test jest '.*\\.spec\\.ts'",
-    "docs": "api-documenter markdown -i ./temp -o ./docs"
+    "docs": "api-documenter markdown -i ./temp -o ./docs",
+    "test-sdk": "ts-node example.ts"
   },
   "jsdelivr": "dist/eppo-sdk.js",
   "repository": {
