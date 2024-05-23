@@ -2,20 +2,11 @@
  * @jest-environment jsdom
  */
 
-import { createHash } from 'crypto';
-
-import {
-  Flag,
-  VariationType,
-  constants,
-  HybridConfigurationStore,
-} from '@eppo/js-client-sdk-common';
+import { Flag, VariationType, HybridConfigurationStore } from '@eppo/js-client-sdk-common';
 import { createClient } from '@vercel/edge-config';
 import * as md5 from 'md5';
 import * as td from 'testdouble';
 import { encode } from 'universal-base64';
-
-const { POLL_INTERVAL_MS, POLL_JITTER_PCT } = constants;
 
 import {
   IAssignmentTestCase,
@@ -28,10 +19,6 @@ import {
 } from '../test/testHelpers';
 
 import { IAssignmentLogger, IEppoClient, getInstance, init } from './index';
-
-function md5Hash(input: string): string {
-  return createHash('md5').update(input).digest('hex');
-}
 
 function base64Encode(input: string): string {
   return Buffer.from(input).toString('base64');
