@@ -23,6 +23,7 @@ export default class EdgeConfigStoreService {
   }
 
   public async set(key: string, value: object | string | number) {
+    console.log('setting');
     try {
       const operation = (await this.client.has(key)) ? 'update' : 'create';
 
@@ -44,7 +45,11 @@ export default class EdgeConfigStoreService {
       });
 
       const result = await updateEdgeConfig.json();
-      console.log({ result });
+
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+
       return result;
     } catch (error) {
       console.log(error);
