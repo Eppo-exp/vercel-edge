@@ -1,7 +1,7 @@
 import { createClient, EdgeConfigClient } from '@vercel/edge-config';
 
 export default class EdgeConfigStoreService {
-  private baseUrl = 'https://api.vercel.com/v1/edge-config/';
+  public _baseUrl = 'https://api.vercel.com/v1/edge-config/';
   public client: EdgeConfigClient;
 
   /**
@@ -23,11 +23,10 @@ export default class EdgeConfigStoreService {
   }
 
   public async set(key: string, value: object | string | number) {
-    console.log('setting');
     try {
       const operation = (await this.client.has(key)) ? 'update' : 'create';
 
-      const updateEdgeConfig = await fetch(`${this.baseUrl}${this.edgeStoreId}/items`, {
+      const updateEdgeConfig = await fetch(`${this._baseUrl}${this.edgeStoreId}/items`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${this.vercelApiToken}`,
@@ -52,7 +51,7 @@ export default class EdgeConfigStoreService {
 
       return result;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

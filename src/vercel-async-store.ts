@@ -10,19 +10,6 @@ export default class VercelAsyncStore<T> implements IAsyncStore<T> {
   private _isInitialized = false;
 
   constructor(edgeConfig: string, edgeConfigStoreId: string, edgeConfigToken: string) {
-    // todo remove or move
-    // if (!process.env.EDGE_CONFIG) {
-    //   throw new Error('Define EDGE_CONFIG env variable');
-    // }
-
-    // if (!process.env.EDGE_CONFIG_STORE_ID) {
-    //   throw new Error('Define EDGE_CONFIG_STORE_ID env variable')
-    // }
-
-    // if (!process.env.EDGE_CONFIG_TOKEN) {
-    //   throw new Error('Define EDGE_CONFIG_TOKEN env variable')
-    // }
-
     this.client = new EdgeConfigStoreService(edgeConfig, edgeConfigStoreId, edgeConfigToken);
   }
 
