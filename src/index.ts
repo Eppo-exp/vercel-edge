@@ -72,6 +72,10 @@ export interface IClientConfig {
   throwOnFailedInitialization?: boolean;
 }
 
+/**
+ * Client for assigning experiment variations.
+ * @public
+ */
 export class EppoJSClient extends EppoClient {
   // Ensure that the client is instantiated during class loading.
   // Use an empty memory-only configuration store until the `init` method is called,
@@ -140,6 +144,12 @@ export class EppoJSClient extends EppoClient {
   }
 }
 
+/**
+ * Initializes the Eppo client with configuration parameters.
+ * This method should be called once on application startup.
+ * @param config - client configuration
+ * @public
+ */
 export async function init(config: IClientConfig): Promise<IEppoClient> {
   validation.validateNotBlank(config.apiKey, 'API key required');
   try {
@@ -190,6 +200,12 @@ export async function init(config: IClientConfig): Promise<IEppoClient> {
   return EppoJSClient.instance;
 }
 
+/**
+ * Used to access a singleton SDK client instance.
+ * Use the method after calling init() to initialize the client.
+ * @returns a singleton client instance
+ * @public
+ */
 export function getInstance(): IEppoClient {
   return EppoJSClient.instance;
 }

@@ -4,3 +4,26 @@
 
 ## API Reference
 
+## Packages
+
+<table><thead><tr><th>
+
+Package
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[@eppo/vercel-edge-sdk](./vercel-edge-sdk.md)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
