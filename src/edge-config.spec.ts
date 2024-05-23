@@ -4,7 +4,6 @@ import EdgeConfigStoreService from './edge-config';
 
 jest.mock('@vercel/edge-config', () => ({
   createClient: jest.fn(),
-  EdgeConfigClient: jest.fn(),
 }));
 
 describe('EdgeConfigStoreService', () => {

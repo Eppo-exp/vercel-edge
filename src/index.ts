@@ -13,6 +13,13 @@ import {
 import { sdkName, sdkVersion } from './sdk-data';
 import VercelAsyncStore from './vercel-async-store';
 
+export {
+  IAssignmentLogger,
+  IAssignmentEvent,
+  IEppoClient,
+  IAsyncStore,
+} from '@eppo/js-client-sdk-common';
+
 /**
  * Configuration used for initializing the Eppo client
  * @public
