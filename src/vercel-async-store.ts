@@ -1,5 +1,6 @@
-import { IAsyncStore } from "@eppo/js-client-sdk-common";
-import EdgeConfigStoreService from "./edge-config";
+import { IAsyncStore } from '@eppo/js-client-sdk-common';
+
+import EdgeConfigStoreService from './edge-config';
 
 export default class VercelAsyncStore<T> implements IAsyncStore<T> {
   private expirationTimeSeconds = 20;
@@ -8,7 +9,7 @@ export default class VercelAsyncStore<T> implements IAsyncStore<T> {
   private createdAtKey = 'eppo-configuration-created-at';
   private _isInitialized = false;
 
-  constructor(edgeConfig: string, edgeConfigStoreId: string, edgeConfigToken: string ) {
+  constructor(edgeConfig: string, edgeConfigStoreId: string, edgeConfigToken: string) {
     // todo remove or move
     // if (!process.env.EDGE_CONFIG) {
     //   throw new Error('Define EDGE_CONFIG env variable');
@@ -22,17 +23,13 @@ export default class VercelAsyncStore<T> implements IAsyncStore<T> {
     //   throw new Error('Define EDGE_CONFIG_TOKEN env variable')
     // }
 
-    this.client = new EdgeConfigStoreService(
-      edgeConfig, 
-      edgeConfigStoreId, 
-      edgeConfigToken
-    );
+    this.client = new EdgeConfigStoreService(edgeConfig, edgeConfigStoreId, edgeConfigToken);
   }
 
   isInitialized(): boolean {
     return this._isInitialized;
   }
-  
+
   async isExpired(): Promise<boolean> {
     const lastConfigCreatedAt = await this.client.get<number>(this.createdAtKey);
 
@@ -42,7 +39,7 @@ export default class VercelAsyncStore<T> implements IAsyncStore<T> {
 
     return lastConfigCreatedAt + this.expirationTimeSeconds * 1000 < Date.now();
   }
-  
+
   async getEntries(): Promise<Record<string, T>> {
     const configuration = await this.client.get<T>(this.storageKey);
 
@@ -55,10 +52,10 @@ export default class VercelAsyncStore<T> implements IAsyncStore<T> {
 
   async setEntries(entries: Record<string, T>): Promise<void> {
     await this.client.set(this.storageKey, entries);
-    await this.client.set(this.createdAtKey, Date.now())
-    
+    await this.client.set(this.createdAtKey, Date.now());
+
     this._isInitialized = true;
-    
+
     return Promise.resolve();
   }
 }

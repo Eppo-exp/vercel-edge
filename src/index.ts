@@ -25,7 +25,7 @@ export interface IClientConfig {
 
   /**
    * Params for setting up connection with Vercel
-   * 
+   *
    * edgeConfig - string given on creation of Vercel Edge Config Store.
    * edgeConfigStoreId - id of created Vercel Edge Config Store.
    * vercelApiToken - Vercel API token with write access. Needed to write configs to Vercel Edge Config Store.
@@ -34,7 +34,7 @@ export interface IClientConfig {
     edgeConfig: string;
     edgeConfigStoreId: string;
     vercelApiToken: string;
-  }
+  };
 
   /**
    * Base URL of the Eppo API.
@@ -69,13 +69,17 @@ export class EppoJSClient extends EppoClient {
   // Ensure that the client is instantiated during class loading.
   // Use an empty memory-only configuration store until the `init` method is called,
   // to avoid serving stale data to the user.
-  public static instance: EppoJSClient = new EppoJSClient(new MemoryOnlyConfigurationStore(), undefined, true);
+  public static instance: EppoJSClient = new EppoJSClient(
+    new MemoryOnlyConfigurationStore(),
+    undefined,
+    true,
+  );
   public static initialized = false;
 
   public getStringAssignment(
     flagKey: string,
     subjectKey: string,
-    subjectAttributes: Record<string, any>,
+    subjectAttributes: Record<string, string | number | boolean>,
     defaultValue: string,
   ): string {
     EppoJSClient.getAssignmentInitializationCheck();
@@ -85,7 +89,7 @@ export class EppoJSClient extends EppoClient {
   public getBoolAssignment(
     flagKey: string,
     subjectKey: string,
-    subjectAttributes: Record<string, any>,
+    subjectAttributes: Record<string, string | number | boolean>,
     defaultValue: boolean,
   ): boolean {
     EppoJSClient.getAssignmentInitializationCheck();
@@ -95,7 +99,7 @@ export class EppoJSClient extends EppoClient {
   public getIntegerAssignment(
     flagKey: string,
     subjectKey: string,
-    subjectAttributes: Record<string, any>,
+    subjectAttributes: Record<string, string | number | boolean>,
     defaultValue: number,
   ): number {
     EppoJSClient.getAssignmentInitializationCheck();
@@ -105,7 +109,7 @@ export class EppoJSClient extends EppoClient {
   public getNumericAssignment(
     flagKey: string,
     subjectKey: string,
-    subjectAttributes: Record<string, any>,
+    subjectAttributes: Record<string, string | number | boolean>,
     defaultValue: number,
   ): number {
     EppoJSClient.getAssignmentInitializationCheck();
@@ -115,7 +119,7 @@ export class EppoJSClient extends EppoClient {
   public getJSONAssignment(
     flagKey: string,
     subjectKey: string,
-    subjectAttributes: Record<string, any>,
+    subjectAttributes: Record<string, string | number | boolean>,
     defaultValue: object,
   ): object {
     EppoJSClient.getAssignmentInitializationCheck();
@@ -169,7 +173,7 @@ export async function init(config: IClientConfig): Promise<IEppoClient> {
     await EppoJSClient.instance.fetchFlagConfigurations();
   } catch (error) {
     console.warn(
-      'Eppo SDK encountered an error initializing, assignment calls will return the default value and not be logged'
+      'Eppo SDK encountered an error initializing, assignment calls will return the default value and not be logged',
     );
     if (config.throwOnFailedInitialization ?? true) {
       throw error;
