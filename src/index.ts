@@ -169,7 +169,10 @@ export async function init(config: IClientConfig): Promise<IEppoClient> {
 
     await configurationStore.init();
     EppoJSClient.instance.setConfigurationStore(configurationStore);
-    EppoJSClient.instance.disableAssignmentCache();
+    // default to LRU cache with 50_000 entries.
+    // we estimate this will use no more than 10 MB of memory
+    // and should be appropriate for most middleware use cases.
+    EppoJSClient.instance.useLRUInMemoryAssignmentCache(50_000);
 
     const requestConfiguration: FlagConfigurationRequestParameters = {
       apiKey: config.apiKey,
