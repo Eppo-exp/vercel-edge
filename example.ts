@@ -10,7 +10,7 @@ const assignmentLogger: IAssignmentLogger = {
 
 async function main() {
   const eppoClient = await init({
-    apiKey: 'O8xGu8cegyGTWYq8Vc02QMmhez-fz8mjL4ajY247kro',
+    apiKey: '<your-eppo-sdk-key>',
     assignmentLogger,
     vercelParams: {
       edgeConfig: 'https://edge-config.vercel.com/...',
