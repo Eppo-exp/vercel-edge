@@ -1,13 +1,13 @@
 import { createClient } from '@vercel/edge-config';
 
-import EdgeConfigStoreService from './edge-config';
+import EdgeConfigStore from './edge-config-store';
 
 jest.mock('@vercel/edge-config', () => ({
   createClient: jest.fn(),
 }));
 
-describe('EdgeConfigStoreService', () => {
-  let service: EdgeConfigStoreService;
+describe('EdgeConfigStore', () => {
+  let service: EdgeConfigStore;
   let mockClient: { get: jest.Mock; has: jest.Mock };
   const mockEdgeConfig = 'mockEdgeConfig';
   const mockEdgeStoreId = 'mockEdgeStoreId';
@@ -19,7 +19,7 @@ describe('EdgeConfigStoreService', () => {
       has: jest.fn(),
     };
     (createClient as jest.Mock).mockReturnValue(mockClient);
-    service = new EdgeConfigStoreService(mockEdgeConfig, mockEdgeStoreId, mockVercelApiToken);
+    service = new EdgeConfigStore(mockEdgeConfig, mockEdgeStoreId, mockVercelApiToken);
   });
 
   afterEach(() => {

@@ -1,14 +1,13 @@
 import { createClient, EdgeConfigClient } from '@vercel/edge-config';
 
-export default class EdgeConfigStoreService {
+export default class EdgeConfigStore {
   public _baseUrl = 'https://api.vercel.com/v1/edge-config/';
   public client: EdgeConfigClient;
 
   /**
-   *
-   * @param edgeConfig edge config store connection string
-   * @param edgeStoreId edge config store id
-   * @param vercelApiToken  vercel api token, used for store write operations
+   * @param edgeConfig Vercel Edge config store connection string (usually Vercel creates EDGE_CONFIG env var, this is what needed)
+   * @param edgeStoreId Vercel Edge config store id
+   * @param vercelApiToken  Vercel api token, used for store write operations
    */
   public constructor(
     edgeConfig: string,

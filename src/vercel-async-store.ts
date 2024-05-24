@@ -1,16 +1,26 @@
 import { IAsyncStore } from '@eppo/js-client-sdk-common';
 
-import EdgeConfigStoreService from './edge-config';
+import EdgeConfigStore from './edge-config-store';
 
 export default class VercelAsyncStore<T> implements IAsyncStore<T> {
-  private expirationTimeSeconds = 20;
-  private client: EdgeConfigStoreService;
+  private client: EdgeConfigStore;
   private storageKey = 'eppo-configuration';
   private createdAtKey = 'eppo-configuration-created-at';
   private _isInitialized = false;
 
-  constructor(edgeConfig: string, edgeConfigStoreId: string, edgeConfigToken: string) {
-    this.client = new EdgeConfigStoreService(edgeConfig, edgeConfigStoreId, edgeConfigToken);
+  /**
+   * @param edgeConfig Vercel Edge config store connection string (usually Vercel creates EDGE_CONFIG env var, this is what needed)
+   * @param edgeStoreId Vercel Edge config store id
+   * @param vercelApiToken  Vercel api token, used for store write operations
+   * @param expirationTimeSeconds
+   */
+  constructor(
+    edgeConfig: string,
+    edgeConfigStoreId: string,
+    edgeConfigToken: string,
+    private expirationTimeSeconds = 20,
+  ) {
+    this.client = new EdgeConfigStore(edgeConfig, edgeConfigStoreId, edgeConfigToken);
   }
 
   isInitialized(): boolean {
