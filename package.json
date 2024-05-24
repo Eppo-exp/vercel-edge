@@ -1,6 +1,6 @@
 {
   "name": "@eppo/vercel-edge-sdk",
-  "version": "3.0.2",
+  "version": "3.0.0",
   "description": "Eppo SDK for use in Vercel Edge Middleware",
   "main": "dist/index.js",
   "files": [
