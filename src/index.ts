@@ -36,11 +36,13 @@ export interface IClientConfig {
    * edgeConfig - string given on creation of Vercel Edge Config Store.
    * edgeConfigStoreId - id of created Vercel Edge Config Store.
    * vercelApiToken - Vercel API token with write access. Needed to write configs to Vercel Edge Config Store.
+   * edgeConfigExpirationSeconds - Time during which config, stored in vercel, is valid. Defaults to 30 seconds
    */
   vercelParams: {
     edgeConfig: string;
     edgeConfigStoreId: string;
     vercelApiToken: string;
+    edgeConfigExpirationSeconds?: number;
   };
 
   /**
@@ -164,6 +166,7 @@ export async function init(config: IClientConfig): Promise<IEppoClient> {
         config.vercelParams.edgeConfig,
         config.vercelParams.edgeConfigStoreId,
         config.vercelParams.vercelApiToken,
+        config.vercelParams.edgeConfigExpirationSeconds,
       ),
     );
 
