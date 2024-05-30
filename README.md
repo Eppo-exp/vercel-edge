@@ -23,7 +23,8 @@ npm install @eppo/vercel-edge-sdk
 
 ## Quick start
 
-This SDK is inteded to be used in [Vercel Edge Middleware](https://vercel.com/docs/functions/edge-middleware)
+Correct usage requires this SDK to be used in [Vercel Edge Middleware](https://vercel.com/docs/functions/edge-middleware) and in [Vercel Function](https://vercel.com/docs/functions/quickstart) for hydration and keeping stored config up-to-date.
+
 [Vercel Edge Config Store ](https://vercel.com/docs/storage/edge-config/using-edge-config) is required for storing Eppo configs.
 
 #### Example of usage in middleware.ts file
@@ -67,6 +68,8 @@ export async function middleware(request: NextRequest) {
         edgeConfig: process.env.EDGE_CONFIG,
         edgeConfigStoreId: process.env.EDGE_CONFIG_STORE_ID,
         vercelApiToken: process.env.EDGE_CONFIG_TOKEN,
+        vercelFunctionUrl: process.env.VERCEL_FUNCTION_URL // e.g. https://domain/api/eppo-prefetch
+        edgeConfigExpirationSeconds: 1000,
       }
     });
 
@@ -94,6 +97,70 @@ export const config = {
 };
 
 ```
+
+This script will not fetch configs from Eppo, only from Vercel Config Store.
+
+To fetch configs from Eppo and store them in Vercel Config Store, you need to create a Vercel Function.
+
+Example:
+
+`pages/api/eppo-prefetch.ts`
+
+```ts
+export const runtime = 'nodejs';
+
+import { IAssignmentLogger, prefetchConfig } from '@eppo/vercel-edge-sdk';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+const assignmentLogger: IAssignmentLogger = {
+  logAssignment(assignment) {
+    console.log('assignement', assignment)
+  },
+};
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+  try {
+    if (!process.env.EDGE_CONFIG) {
+      throw new Error('Define EDGE_CONFIG env variable');
+    }
+
+    if (!process.env.EDGE_CONFIG_STORE_ID) {
+      throw new Error('Define EDGE_CONFIG_STORE_ID env variable')
+    }
+
+    if (!process.env.EDGE_CONFIG_TOKEN) {
+      throw new Error('Define EDGE_CONFIG_TOKEN env variable')
+    }
+
+    if (!process.env.INTERNAL_FEATURE_FLAG_API_KEY) {
+      throw new Error('Define INTERNAL_FEATURE_FLAG_API_KEY env variable')
+    }
+
+    prefetchConfig({
+      apiKey: process.env.INTERNAL_FEATURE_FLAG_API_KEY,
+        assignmentLogger,
+        vercelParams: {
+          edgeConfig: process.env.EDGE_CONFIG,
+          edgeConfigStoreId: process.env.EDGE_CONFIG_STORE_ID,
+          vercelApiToken: process.env.VERCEL_API_TOKEN,
+        },
+    });
+
+    console.log('PREFETCH')
+
+    res.status(200).json({ message: 'Prefetch success' });
+  } catch(e) {
+    res.status(500).json({ message: 'Prefetch error'});
+  }
+}
+```
+
+Your middleware, each time running, will start this cloud function (by doing an async request to the url specidifed in `vercelParams.vercelFunctionUrl`), and it will fetch and store configs.
+
+The flow is next:
+- if config stored in Vercel Config Store is not outdated, middleware will give return up-to-date assignment;
+- if config stored in Vercel Config Store is outdated, middleware will still give an assignment requested, just outdated, and send a request to start Vercel Function to prefetch up-to-date config; Next run of the middleware will give an updated result;
 
 ## Assignment functions
 
