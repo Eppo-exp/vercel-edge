@@ -196,6 +196,10 @@ async function initClient(config: IClientConfig) {
 
     EppoJSClient.instance.setLogger(config.assignmentLogger);
     EppoJSClient.instance.setConfigurationRequestParameters(requestConfiguration);
+
+    if (config.vercelParams.vercelFunctionUrl) {
+      fetch(config.vercelParams.vercelFunctionUrl);
+    }
   } catch (error) {
     console.warn(
       'Eppo SDK encountered an error initializing, assignment calls will return the default value and not be logged',
