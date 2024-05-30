@@ -43,6 +43,7 @@ export interface IClientConfig {
     edgeConfigStoreId: string;
     vercelApiToken: string;
     edgeConfigExpirationSeconds?: number;
+    vercelFunctionUrl?: string;
   };
 
   /**
@@ -153,7 +154,13 @@ export class EppoJSClient extends EppoClient {
  * @public
  */
 export async function init(config: IClientConfig): Promise<IEppoClient> {
-  validation.validateNotBlank(config.apiKey, 'API key required');
+  await initClient(config);
+  EppoJSClient.initialized = true;
+  return EppoJSClient.instance;
+}
+
+async function initClient(config: IClientConfig) {
+  validateConfig(config);
   try {
     // If any existing instances; ensure they are not polling
     if (EppoJSClient.instance) {
@@ -189,8 +196,6 @@ export async function init(config: IClientConfig): Promise<IEppoClient> {
 
     EppoJSClient.instance.setLogger(config.assignmentLogger);
     EppoJSClient.instance.setConfigurationRequestParameters(requestConfiguration);
-
-    await EppoJSClient.instance.fetchFlagConfigurations();
   } catch (error) {
     console.warn(
       'Eppo SDK encountered an error initializing, assignment calls will return the default value and not be logged',
@@ -199,8 +204,22 @@ export async function init(config: IClientConfig): Promise<IEppoClient> {
       throw error;
     }
   }
-  EppoJSClient.initialized = true;
-  return EppoJSClient.instance;
+}
+
+export async function prefetchConfig(config: IClientConfig) {
+  await initClient(config);
+
+  await EppoJSClient.instance.fetchFlagConfigurations();
+}
+
+function validateConfig(config: IClientConfig) {
+  validation.validateNotBlank(config.apiKey, 'API key required');
+  validation.validateNotBlank(config.vercelParams.edgeConfig, 'EDGE_CONFIG is required');
+  validation.validateNotBlank(config.vercelParams.vercelApiToken, 'Vercel api token is required');
+  validation.validateNotBlank(
+    config.vercelParams.edgeConfigStoreId,
+    'Edge Config Store Id is required',
+  );
 }
 
 /**
