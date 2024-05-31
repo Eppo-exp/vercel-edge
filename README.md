@@ -23,7 +23,7 @@ npm install @eppo/vercel-edge-sdk
 
 ## Quick start
 
-Correct usage requires this SDK to be used in [Vercel Edge Middleware](https://vercel.com/docs/functions/edge-middleware) and in [Vercel Function](https://vercel.com/docs/functions/quickstart) for hydration and keeping stored config up-to-date.
+This SDK is inteded to be used in [Vercel Edge Middleware](https://vercel.com/docs/functions/edge-middleware) and in [Vercel Function](https://vercel.com/docs/functions/quickstart) for hydration and keeping stored config up-to-date.
 
 [Vercel Edge Config Store ](https://vercel.com/docs/storage/edge-config/using-edge-config) is required for storing Eppo configs.
 
