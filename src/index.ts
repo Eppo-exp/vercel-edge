@@ -198,7 +198,10 @@ async function initClient(config: IClientConfig) {
     EppoJSClient.instance.setConfigurationRequestParameters(requestConfiguration);
 
     if (config.vercelParams.vercelFunctionUrl) {
-      fetch(config.vercelParams.vercelFunctionUrl);
+      const isConfigExpired = await configurationStore.isExpired();
+      if (isConfigExpired) {
+        fetch(config.vercelParams.vercelFunctionUrl);
+      }
     }
   } catch (error) {
     console.warn(
