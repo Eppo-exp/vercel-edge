@@ -147,8 +147,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
     });
 
-    console.log('PREFETCH')
-
     res.status(200).json({ message: 'Prefetch success' });
   } catch(e) {
     res.status(500).json({ message: 'Prefetch error'});
@@ -161,6 +159,24 @@ Your middleware, each time running, will start this cloud function (by doing an 
 The flow is next:
 - if config stored in Vercel Config Store is not outdated, middleware will give return up-to-date assignment;
 - if config stored in Vercel Config Store is outdated, middleware will still give an assignment requested, just outdated, and send a request to start Vercel Function to prefetch up-to-date config; Next run of the middleware will give an updated result;
+
+
+### Vercel Cron Job
+
+You can hydrate data using [Vercel Cron Job](https://vercel.com/guides/how-to-setup-cron-jobs-on-vercel).
+For this, in your middleware, do not provide a URL to Vercel Function.
+Create a Vercel Function and as in the example above, and create a cron job like:
+
+```ts
+{
+  "crons": [
+    {
+      "path": "/api/eppo-prefetch",
+      "schedule": "0 5 * * *"
+    }
+  ]
+}
+```
 
 ## Assignment functions
 
