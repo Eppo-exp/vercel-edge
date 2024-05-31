@@ -275,6 +275,7 @@ describe('EppoJSClient E2E test', () => {
       'test variation assignment splits',
       async ({ flag, variationType, defaultValue, subjects }: IAssignmentTestCase) => {
         const client = getInstance();
+        await client.fetchFlagConfigurations();
 
         const typeAssignmentFunctions = {
           [VariationType.BOOLEAN]: client.getBoolAssignment.bind(client),

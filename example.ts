@@ -1,6 +1,6 @@
 import { IAssignmentLogger } from '@eppo/js-client-sdk-common';
 
-import { init } from './src/index';
+import { init, prefetchConfig } from './src/index';
 
 const assignmentLogger: IAssignmentLogger = {
   logAssignment(assignment) {
@@ -9,13 +9,24 @@ const assignmentLogger: IAssignmentLogger = {
 };
 
 async function main() {
+  await prefetchConfig({
+    apiKey: '...',
+    assignmentLogger,
+    vercelParams: {
+      edgeConfig: 'https://edge-config.vercel.com/...',
+      edgeConfigStoreId: '...',
+      vercelApiToken: '..',
+    },
+  });
+
   const eppoClient = await init({
-    apiKey: '<your-eppo-sdk-key>',
+    apiKey: '...',
     assignmentLogger,
     vercelParams: {
       edgeConfig: 'https://edge-config.vercel.com/...',
       edgeConfigStoreId: '...',
       vercelApiToken: '...',
+      vercelFunctionUrl: 'http://localhost:3001/api/eppo-prefetch',
     },
   });
 
