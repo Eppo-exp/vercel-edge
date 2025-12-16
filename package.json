@@ -61,6 +61,6 @@
     "@vercel/edge-config": "^1.1.1"
   },
   "resolutions": {
-    "jsdom/form-data": "^4.0.4"
+    "form-data": "^4.0.4"
   }
 }
