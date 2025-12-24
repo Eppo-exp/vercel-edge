@@ -62,7 +62,7 @@ export function getTestAssignments(
         subject.subjectAttributes,
         testCase.defaultValue,
         obfuscated,
-      ) || testCase.defaultValue; // Fallback to defaultValue if null
+      ) ?? testCase.defaultValue; // Fallback to defaultValue if null
     assignments.push({ subject: subject, assignment: assignment });
   }
   return assignments;
