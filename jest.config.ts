@@ -8,9 +8,9 @@ const jestConfig = {
   },
   testRegex: '.*\\..*spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    '^.+\\.(t|j)s$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
   },
-  collectCoverageFrom: ['**/*.(t|j)s'],
+  collectCoverageFrom: ['**/*.{ts,js}'],
   coverageDirectory: 'coverage/',
   testEnvironment: 'node',
 };
