@@ -44,3 +44,10 @@ prepare: test-data
 	 rm -rf dist/
 	 yarn tsc
 	 yarn webpack
+
+## build
+.PHONY: build
+build:
+	rm -rf dist/
+	yarn tsc
+	yarn webpack
