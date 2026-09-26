@@ -19,7 +19,6 @@ jobs:
         with:
           # npm trusted publishing (OIDC) needs Node >= 22.14 and npm >= 11.5.1.
           node-version: "24.x"
-          registry-url: "https://registry.npmjs.org"
 
       - run: yarn install --frozen-lockfile
         env:
