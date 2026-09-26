@@ -28,4 +28,5 @@ jobs:
       - run: yarn test
       - run: yarn build
 
-      - run: npm publish --access public
+      # Skip `prepare`: the steps above already built dist.
+      - run: npm publish --access public --ignore-scripts
