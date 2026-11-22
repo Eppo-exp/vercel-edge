@@ -21,8 +21,6 @@ jobs:
           node-version: "24.x"
 
       - run: yarn install --frozen-lockfile
-        env:
-          HUSKY: 0
 
       - run: yarn test
       - run: yarn build

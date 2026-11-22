@@ -26,8 +26,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      - name: "Set up GCP SDK for downloading test data"
-        uses: "google-github-actions/setup-gcloud@v1"
       - name: Install SDK dependencies
         run: yarn --frozen-lockfile
         working-directory: ./
