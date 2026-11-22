@@ -40,7 +40,6 @@ test-data:
 ## prepare
 .PHONY: prepare
 prepare: test-data
-	 yarn husky install
 	 rm -rf dist/
 	 yarn tsc
 	 yarn webpack
